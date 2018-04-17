@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  server_db:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_USER: "postgres"
+      POSTGRES_DB: "postgres"
+      PGDATA: "/var/lib/postgresql/data/db/"
+    command: -p 5001
+    ports:
+      - "5001:5001"
+  server_web:
+    build: .
+    command: python3 manage.py runserver 0.0.0.0:8001
+    volumes:
+      - .:/code
+    ports:
+      - "8001:8001"
+    depends_on:
+      - server_db
